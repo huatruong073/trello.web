@@ -4,7 +4,7 @@ import { type RouteConfig, index, route } from '@react-router/dev/routes'
 export default [
     index('routes/home.tsx'),
     route('login', 'pages/login/login.tsx'),
-
+    route('register', 'pages/register/register.tsx'),
     // Example of nested routes - add when needed
     route('boards', 'routes/boards/_layout.tsx', [
         index('routes/boards/index.tsx'),

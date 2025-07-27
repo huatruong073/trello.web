@@ -6,7 +6,10 @@ import {
     Scripts,
     ScrollRestoration,
     useLocation,
+    useNavigate,
 } from 'react-router'
+import { useEffect } from 'react'
+import { useAuth } from '~/context/AuthContext'
 import type { Route } from '~/+types/root'
 
 import '~/app.css'
@@ -47,20 +50,38 @@ export function Layout({ children }: { children: React.ReactNode }) {
     )
 }
 
-export default function App() {
+function AppContent() {
     const location = useLocation()
     const hideTopBar =
         location.pathname === '/login' || location.pathname === '/register'
+    const navigate = useNavigate()
+    const { isAuthenticated, isLoading } = useAuth()
+
+    useEffect(() => {
+        if (!isAuthenticated && !hideTopBar && !isLoading) {
+            navigate('/', { replace: true })
+        }
+    }, [isAuthenticated, hideTopBar, navigate, isLoading])
+
+    if (isLoading) {
+        return null
+    }
 
     return (
         <div className="w-full min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-100">
             {!hideTopBar && <TopBar />}
             <div className="container mx-auto p-4">
-                <AuthProvider>
-                    <Outlet />
-                </AuthProvider>
+                <Outlet />
             </div>
         </div>
+    )
+}
+
+export default function App() {
+    return (
+        <AuthProvider>
+            <AppContent />
+        </AuthProvider>
     )
 }
 

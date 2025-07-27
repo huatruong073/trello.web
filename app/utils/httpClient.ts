@@ -33,18 +33,18 @@ api.interceptors.response.use(
 export const HttpClient = {
     get: async (url: string) => {
         url = url.startsWith('http') ? url : `${API_GATEWAY}/${url}`
-        return await axios.get(url)
+        return await api.get(url)
     },
     post: async (url: string, data: any) => {
         url = url.startsWith('http') ? url : `${API_GATEWAY}/${url}`
-        return await axios.post(url, data)
+        return await api.post(url, data)
     },
     put: async (url: string, data: any) => {
         url = url.startsWith('http') ? url : `${API_GATEWAY}/${url}`
-        return await axios.put(url, data)
+        return await api.put(url, data)
     },
     delete: async (url: string) => {
         url = url.startsWith('http') ? url : `${API_GATEWAY}/${url}`
-        return await axios.delete(url)
+        return await api.delete(url)
     },
 }

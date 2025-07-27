@@ -41,12 +41,8 @@ export default function Login() {
         }
     }
 
-    const onLogout = async () => {
-        await logout()
-    }
-
     return (
-        <div className="min-h-screen flex items-center justify-center rounded-lg">
+        <div className="min-h-screen flex items-center justify-center rounded-lg bg-gradient-to-tl from-blue-50 via-white to-purple-100">
             <div className="w-full max-w-md rounded-lg shadow-md p-6 bg-gradient-to-br from-blue-50 via-white to-purple-100">
                 <h1 className="text-3xl font-bold mb-6 text-center text-gray-900">
                     Sign In

@@ -24,7 +24,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 // Auth provider component
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<IUserModel | null>(null)
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [token, setToken] = useState<string | null>(null)
     const navigate = useNavigate()
 
@@ -35,6 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setUser(jwtDecode(accessToken) as IUserModel)
             setToken(accessToken)
         }
+        setIsLoading(false)
     }, [])
 
     const login = async (loginResponse: ILoginResponse) => {
@@ -51,6 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     loginResponse.Data.RefreshToken
                 )
                 setToken(loginResponse.Data.AccessToken)
+                navigate('/boards')
             }
             setIsLoading(false)
         } finally {
@@ -64,7 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setToken(null)
         localStorage.removeItem('accessToken')
         localStorage.removeItem('refreshToken')
-        navigate('/login', { replace: true })
+        navigate('/')
     }
 
     return (
