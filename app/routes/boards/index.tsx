@@ -11,17 +11,9 @@ export async function loader({}: Route.LoaderArgs) {
             { id: '3', title: 'Personal Tasks', owner: 'User1' },
         ]
 
-        return new Response(JSON.stringify({ boards }), {
-            headers: { 'Content-Type': 'application/json' },
-        })
+        return { boards }
     } catch (error) {
-        return new Response(
-            JSON.stringify({ boards: [], error: 'Failed to load boards' }),
-            {
-                status: 500,
-                headers: { 'Content-Type': 'application/json' },
-            }
-        )
+        return { boards: [], error: 'Failed to load boards' }
     }
 }
 
@@ -39,7 +31,7 @@ export default function BoardsIndex() {
     }
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-2">
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold">Your Boards</h1>
                 <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">

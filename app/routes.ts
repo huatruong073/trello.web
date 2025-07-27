@@ -3,12 +3,13 @@ import { type RouteConfig, index, route } from '@react-router/dev/routes'
 // Define your route structure
 export default [
     index('routes/home.tsx'),
+    route('login', 'pages/login/login.tsx'),
 
     // Example of nested routes - add when needed
-    // route('boards', 'routes/boards/_layout.tsx', [
-    //   index('routes/boards/index.tsx'),
-    //   route(':id', 'routes/boards/$id.tsx'),
-    // ]),
+    route('boards', 'routes/boards/_layout.tsx', [
+        index('routes/boards/index.tsx'),
+        // route(':id', 'routes/boards/$id.tsx'),
+    ]),
 
     // Auth routes - add when needed
     // route('auth', 'routes/auth/_layout.tsx', [

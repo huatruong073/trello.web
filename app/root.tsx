@@ -5,11 +5,13 @@ import {
     Outlet,
     Scripts,
     ScrollRestoration,
+    useLocation,
 } from 'react-router'
+import type { Route } from '~/+types/root'
 
-import type { Route } from './+types/root'
-import './app.css'
-import TopBar from './components/topbar'
+import '~/app.css'
+import TopBar from '~/components/layouts/topbar'
+import { AuthProvider } from '~/context/AuthContext'
 
 export const links: Route.LinksFunction = () => [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -46,10 +48,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+    const location = useLocation()
+    const hideTopBar =
+        location.pathname === '/login' || location.pathname === '/register'
+
     return (
-        <div className="w-full">
-            <TopBar />
-            <Outlet />
+        <div className="w-full min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-100">
+            {!hideTopBar && <TopBar />}
+            <div className="container mx-auto p-4">
+                <AuthProvider>
+                    <Outlet />
+                </AuthProvider>
+            </div>
         </div>
     )
 }

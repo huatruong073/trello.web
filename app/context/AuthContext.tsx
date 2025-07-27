@@ -1,17 +1,21 @@
-import { createContext, useState, useContext, type ReactNode } from 'react'
-
-// Define the Auth context types
-type User = {
-    id: string
-    name: string
-    email: string
-} | null
+import { jwtDecode } from 'jwt-decode'
+import {
+    createContext,
+    useContext,
+    useEffect,
+    useState,
+    type ReactNode,
+} from 'react'
+import { useNavigate } from 'react-router'
+import type { ILoginResponse, IUserModel } from '~/+types/ums'
 
 type AuthContextType = {
-    user: User
-    login: (email: string, password: string) => Promise<void>
+    user: IUserModel | null
+    token: string | null
+    login: (request: ILoginResponse) => Promise<void>
     logout: () => void
     isLoading: boolean
+    isAuthenticated: boolean
 }
 
 // Create the Auth context
@@ -19,22 +23,36 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 // Auth provider component
 export function AuthProvider({ children }: { children: ReactNode }) {
-    const [user, setUser] = useState<User>(null)
+    const [user, setUser] = useState<IUserModel | null>(null)
     const [isLoading, setIsLoading] = useState(false)
+    const [token, setToken] = useState<string | null>(null)
+    const navigate = useNavigate()
 
-    // Mock login function
-    const login = async (email: string, password: string) => {
+    useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken')
+        const refreshToken = localStorage.getItem('refreshToken')
+        if (accessToken && refreshToken) {
+            setUser(jwtDecode(accessToken) as IUserModel)
+            setToken(accessToken)
+        }
+    }, [])
+
+    const login = async (loginResponse: ILoginResponse) => {
         try {
             setIsLoading(true)
-            // In a real app, this would be an API call
-            await new Promise((resolve) => setTimeout(resolve, 1000))
-
-            // Mock successful login
-            setUser({
-                id: '123',
-                name: 'Demo User',
-                email: email,
-            })
+            if (loginResponse.Data.AccessToken) {
+                setUser(jwtDecode(loginResponse.Data.AccessToken) as IUserModel)
+                localStorage.setItem(
+                    'accessToken',
+                    loginResponse.Data.AccessToken
+                )
+                localStorage.setItem(
+                    'refreshToken',
+                    loginResponse.Data.RefreshToken
+                )
+                setToken(loginResponse.Data.AccessToken)
+            }
+            setIsLoading(false)
         } finally {
             setIsLoading(false)
         }
@@ -43,10 +61,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Logout function
     const logout = () => {
         setUser(null)
+        setToken(null)
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('refreshToken')
+        navigate('/login', { replace: true })
     }
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, isLoading }}>
+        <AuthContext.Provider
+            value={{
+                user,
+                token,
+                login,
+                logout,
+                isLoading,
+                isAuthenticated: !!token,
+            }}
+        >
             {children}
         </AuthContext.Provider>
     )
