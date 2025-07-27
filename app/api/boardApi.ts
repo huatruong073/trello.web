@@ -33,5 +33,5 @@ export async function updateBoard(id: string, boardData: any) {
 
 export async function deleteBoard(id: string) {
     // In a real app, you'd make a DELETE request to your API
-    return { success: true }
+    return { id: id, success: true }
 }

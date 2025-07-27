@@ -19,7 +19,7 @@ export default function Login() {
             return
         }
         const formData = new FormData(event.currentTarget)
-        const username = formData.get('username') as string
+        // const username = formData.get('username') as string
         const password = formData.get('password') as string
         const confirmPassword = formData.get('confirm-password') as string
         if (password !== confirmPassword) {

@@ -12,7 +12,7 @@ export async function loader({}: Route.LoaderArgs) {
         ]
 
         return { boards }
-    } catch (error) {
+    } catch {
         return { boards: [], error: 'Failed to load boards' }
     }
 }

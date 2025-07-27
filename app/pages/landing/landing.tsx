@@ -1,11 +1,4 @@
-import {
-    Trello,
-    ArrowRight,
-    CheckSquare,
-    Users,
-    Zap,
-    ShieldCheck,
-} from 'lucide-react'
+import { ArrowRight, CheckSquare, Users, Zap, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router'
 
 export function meta() {

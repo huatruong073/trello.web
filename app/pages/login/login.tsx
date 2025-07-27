@@ -16,7 +16,7 @@ export function meta() {
 
 export default function Login() {
     const navigate = useNavigate()
-    const { login, isLoading, logout } = useAuth()
+    const { login } = useAuth()
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         if (!event.currentTarget.checkValidity()) {
