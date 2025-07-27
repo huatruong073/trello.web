@@ -1,5 +1,3 @@
-import type { i } from 'node_modules/@react-router/dev/dist/routes-DHIOx0R9'
-
 export interface ILoginRequest {
     UserName: string
     Password: string
